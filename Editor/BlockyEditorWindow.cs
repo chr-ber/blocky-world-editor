@@ -117,7 +117,7 @@ namespace PeartreeGames.BlockyWorldEditor.Editor
             {
                 var preprocessors = assembly.GetTypes()
                     .Where(t => !t.IsAbstract && t.GetInterfaces().Contains(typeof(IBlockyScenePreprocessor)))
-                    .Select(t => (IBlockyScenePreprocessor) Activator.CreateInstance(t)).ToList();
+                    .Select(t => (IBlockyScenePreprocessor)Activator.CreateInstance(t)).ToList();
                 results.AddRange(preprocessors);
             }
 
@@ -207,7 +207,7 @@ namespace PeartreeGames.BlockyWorldEditor.Editor
                         _settings.brushSize = 3;
                         break;
                 }
-                
+
                 if (!evt.control && !evt.shift) evt.Use();
                 Repaint();
                 return;
@@ -291,7 +291,7 @@ namespace PeartreeGames.BlockyWorldEditor.Editor
             var prev = rootVisualElement.Q("Palette");
             if (prev != null) rootVisualElement.Remove(prev);
 
-            var container = new GroupBox {style = {position = Position.Relative}};
+            var container = new GroupBox { style = { position = Position.Relative } };
             container.AddToClassList("preview-container");
             scroll.Add(container);
             var palette = _settings.palette;
@@ -322,7 +322,7 @@ namespace PeartreeGames.BlockyWorldEditor.Editor
                     yield return null;
                 }
 
-                var img = new Image {image = texture};
+                var img = new Image { image = texture };
                 img.AddToClassList("preview");
                 button.Add(img);
                 button.Add(new Label(block.Name));
@@ -435,10 +435,9 @@ namespace PeartreeGames.BlockyWorldEditor.Editor
                 var rulePos = pos + dir;
                 var ruleKey = new BlockyObjectKey(rulePos, CurrentBlocky.Layer);
                 if (_map.TryGetValue(ruleKey, out var existingBlock) &&
-                    existingBlock.TryGetComponent<BlockyRuleBehaviour>(out var ruleBehaviour) &&
-                    ruleBehaviour.ruleSet == ruleSet)
+                    existingBlock.TryGetComponent<BlockyRuleBehaviour>(out var ruleBehaviour))
                 {
-                    var update = ruleSet.GetPrefab(_map, ruleKey);
+                    var update = ruleBehaviour.ruleSet.GetPrefab(_map, ruleKey);
                     if (_settings.useUndo)
                     {
                         Undo.RegisterCreatedObjectUndo(update.gameObject, "Create neighbouring Blocky Object");
